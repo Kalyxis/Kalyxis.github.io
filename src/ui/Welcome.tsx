@@ -21,8 +21,8 @@ export function Welcome() {
           <button type="button" className="v-btn" onClick={() => useAppStore.getState().patchUi({ examplesOpen: true })}>
             <Sparkles size={17} strokeWidth={1.4} /> Start from an example
           </button>
-          <button type="button" className="v-btn" onClick={() => document.getElementById('kalyxis-import-files')?.click()}>
-            <Upload size={17} strokeWidth={1.4} /> Import files
+          <button type="button" className="v-btn" onClick={() => app.actions.openFromDevice()}>
+            <Upload size={17} strokeWidth={1.4} /> Open files
           </button>
           {Platform.canPickDirectory ? (
             <button type="button" className="v-btn" onClick={() => void app.actions.openFolder()}>

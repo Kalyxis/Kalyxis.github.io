@@ -69,6 +69,14 @@ export interface WorkspaceInfo {
   rootName: string
 }
 
+export interface ExportJob {
+  file: File
+  name: string
+  size: number
+  /** Plain text of the file when it is an editable document, used for Copy. */
+  text: string | null
+}
+
 export interface UiState {
   sidebarOpen: boolean
   wide: boolean
@@ -87,6 +95,7 @@ export interface UiState {
   entryMenu: FsEntry | null
   newMenuOpen: boolean
   explorerMenuOpen: boolean
+  exportJob: ExportJob | null
 }
 
 export interface RunState {
@@ -157,6 +166,7 @@ export const useAppStore = create<AppState>((set) => ({
     entryMenu: null,
     newMenuOpen: false,
     explorerMenuOpen: false,
+    exportJob: null,
   },
   run: { status: 'idle', chunks: [], chars: 0, ms: null, error: null, runner: null, runtime: 'idle' },
   preview: { html: null, key: 0 },

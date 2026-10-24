@@ -12,6 +12,7 @@ import { FindBar } from './FindBar'
 import { InstallBanner } from './InstallBanner'
 import { Palette } from './Palette'
 import { SettingsSheet } from './SettingsSheet'
+import { ExportSheet } from './ExportSheet'
 import { EntryMenu, ExamplesSheet, ExplorerMenu, LanguageSheet, NewMenu } from './Sheets'
 import { StatusBar } from './StatusBar'
 import { TabBar } from './TabBar'
@@ -56,7 +57,17 @@ export function App() {
   const editing = touch && focused && keyboardOpen && !wide
 
   return (
-    <div className={`v-app ${wide ? 'is-wide' : 'is-narrow'} ${editing ? 'is-editing' : ''} ${ready ? 'is-ready' : ''}`}>
+    <div
+      className={`v-app ${wide ? 'is-wide' : 'is-narrow'} ${editing ? 'is-editing' : ''} ${ready ? 'is-ready' : ''}`}
+      onDragOver={(e) => {
+        if (e.dataTransfer.types.includes('Files')) e.preventDefault()
+      }}
+      onDrop={(e) => {
+        if (!e.dataTransfer.files.length) return
+        e.preventDefault()
+        void app.actions.openFiles(Array.from(e.dataTransfer.files))
+      }}
+    >
       <AppBar />
       <div className="v-body">
         <aside className={`v-sidebar ${sidebarOpen ? 'is-open' : ''}`} aria-label="File explorer" aria-hidden={!sidebarOpen}>
@@ -82,6 +93,7 @@ export function App() {
       <ExplorerMenu />
       <ExamplesSheet />
       <LanguageSheet />
+      <ExportSheet />
       <DialogHost />
       <ToastHost />
       {!previewFull ? <InstallBanner /> : null}
@@ -96,7 +108,7 @@ export function App() {
         onChange={(e) => {
           const files = Array.from(e.target.files ?? [])
           e.target.value = ''
-          void app.actions.importFiles(files)
+          void app.actions.openFiles(files)
         }}
       />
       <input

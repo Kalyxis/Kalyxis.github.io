@@ -34,21 +34,30 @@ const icon = { size: 19, strokeWidth: 1.4 }
 export function NewMenu() {
   const open = useAppStore((s) => s.ui.newMenuOpen)
   const patchUi = useAppStore((s) => s.patchUi)
+  const tab = useAppStore(activeTabSelector)
   const close = () => patchUi({ newMenuOpen: false })
   const run = (fn: () => void) => () => {
     close()
     window.setTimeout(fn, 30)
   }
   return (
-    <Sheet open={open} title="New" onClose={close} size="sm">
+    <Sheet open={open} title="File" onClose={close} size="sm">
       <MenuItem icon={<FilePlus {...icon} />} label="New file" hint="Create a file in the current folder" onClick={run(() => void app.actions.newFile())} />
       <MenuItem icon={<FileText {...icon} />} label="Scratch buffer" hint="A temporary file you can save later" onClick={run(() => app.actions.newScratch())} />
       <MenuItem icon={<Sparkles {...icon} />} label="From an example" hint="Python, JavaScript and HTML starters" onClick={run(() => patchUi({ examplesOpen: true }))} />
-      <MenuItem icon={<Upload {...icon} />} label="Import files" hint="Pick files or a zip from your device" onClick={run(() => document.getElementById('kalyxis-import-files')?.click())} />
-      {typeof window.showOpenFilePicker === 'function' ? (
-        <MenuItem icon={<FolderOpen {...icon} />} label="Open file from disk" onClick={run(() => void app.documents.openWithPicker())} />
+      <MenuItem
+        icon={<Upload {...icon} />}
+        label="Open files"
+        hint="From the Files app, iCloud Drive or a zip"
+        onClick={() => {
+          app.actions.openFromDevice()
+          close()
+        }}
+      />
+      {tab ? (
+        <MenuItem icon={<Share2 {...icon} />} label={Platform.isIOS ? 'Save to Files or share' : 'Save a copy'} hint={`Export ${tab.name} from this editor`} onClick={() => { close(); app.documents.exportToDevice() }} />
       ) : null}
-    </Sheet>
+        </Sheet>
   )
 }
 

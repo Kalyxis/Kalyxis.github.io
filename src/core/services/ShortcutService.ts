@@ -4,6 +4,7 @@ import type { CommandRegistry } from './CommandRegistry'
 
 /** key combo -> command id. "Mod" is Cmd on Apple devices and Ctrl elsewhere. */
 export const SHORTCUTS: Record<string, string> = {
+  'Mod+KeyO': 'file.open',
   'Mod+KeyS': 'file.save',
   'Mod+Shift+KeyS': 'file.saveAs',
   'Mod+Enter': 'run.run',
