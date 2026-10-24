@@ -9,7 +9,9 @@ import type { SettingsService } from '../core/services/SettingsService'
 import type { ToastService } from '../core/services/ToastService'
 import type { WorkspaceService } from '../core/services/WorkspaceService'
 import type { Example } from '../core/templates/examples'
-import { uniqueName } from '../core/util/paths'
+import { BINARY_EXTENSIONS } from '../core/languages/catalog'
+import { extname, joinPath, uniqueName } from '../core/util/paths'
+import { Platform } from '../core/util/platform'
 import { clamp } from '../core/util/timing'
 import { useAppStore, type PanelTab } from '../store/useAppStore'
 
@@ -84,10 +86,62 @@ export class AppActions {
     this.closeDrawerOnPhone()
   }
 
-  async importFiles(files: File[]): Promise<void> {
+  /** Starts the "open from device" flow. Call it straight from a tap so iOS allows the picker. */
+  openFromDevice(): void {
+    if (Platform.canPickFiles) void this.d.documents.openWithPicker()
+    else document.getElementById('kalyxis-import-files')?.click()
+  }
+
+  /**
+   * Loads files picked from the device (Files app, iCloud Drive, drag and drop) and opens them in tabs.
+   * Zip archives are extracted into a folder. A file whose name already exists asks to replace it, so
+   * the round trip open, edit, save to Files, open again does not pile up copies.
+   */
+  async openFiles(files: File[]): Promise<void> {
     if (!files.length) return
-    const paths = await this.d.workspace.importFiles(files)
-    if (paths.length === 1) await this.d.documents.openFile(paths[0])
+    const { workspace, documents, dialogs } = this.d
+    const dir = workspace.currentDir()
+    const plain = files.filter((f) => !/\.zip$/i.test(f.name))
+    const zips = files.filter((f) => /\.zip$/i.test(f.name))
+    const toOpen: string[] = []
+    const keepBoth: File[] = []
+
+    for (const file of plain) {
+      const path = joinPath(dir, file.name)
+      if (!(await workspace.provider.exists(path))) {
+        keepBoth.push(file)
+        continue
+      }
+      const choice = await dialogs.choose({
+        title: `"${file.name}" is already here`,
+        message: 'Replace the copy in the workspace with the file you picked, or keep both?',
+        options: [
+          { id: 'replace', label: 'Replace', tone: 'danger' },
+          { id: 'both', label: 'Keep both', tone: 'primary' },
+          { id: 'skip', label: 'Skip this file' },
+        ],
+      })
+      if (choice === 'both') keepBoth.push(file)
+      else if (choice === 'replace') {
+        const open = documents.all.find((s) => s.source.key === `${workspace.provider.id}:${path}`)
+        if (open) await documents.close(open.id, { force: true })
+        await workspace.provider.writeBytes(path, new Uint8Array(await file.arrayBuffer()))
+        toOpen.push(path)
+      }
+    }
+
+    if (keepBoth.length) toOpen.push(...(await workspace.importFiles(keepBoth, dir)))
+    if (zips.length) await workspace.importFiles(zips, dir)
+    await workspace.refresh()
+
+    const editable = toOpen.filter((p) => !BINARY_EXTENSIONS.has(extname(p)))
+    for (const path of editable.slice(0, 8)) await documents.openFile(path)
+    if (editable.length > 8) this.d.toasts.show(`Opened 8 of ${editable.length} files. The rest are in the file list.`)
+    if (editable.length) this.closeDrawerOnPhone()
+  }
+
+  async importFiles(files: File[]): Promise<void> {
+    await this.openFiles(files)
   }
 
   async importFolder(files: File[]): Promise<void> {

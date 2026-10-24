@@ -76,6 +76,14 @@ npm run preview
 
 `npm run assets` regenerates the icons and splash screens from the mark (only needed after a design change).
 
+## Opening and saving files on iPhone
+
+- **Open:** tap the plus button, then Open files (or Open files on the start screen). Pick files from the Files app, iCloud Drive or On My iPhone. Several files and zip archives work. Files open in tabs and are kept in the workspace.
+- **Save:** edits save automatically into the workspace. To get a file out, tap the plus button, then Save to Files or share, and choose Save to Files in the iOS sheet. Saving with the same name replaces the old copy.
+- **Reopen:** opening a file whose name already exists asks whether to replace the workspace copy, keep both or skip.
+- **Backup:** Export workspace as zip from the explorer menu uses the same Save to Files sheet.
+- Safari cannot write back to a file in the Files app, so saving a copy through the share sheet is the iOS equivalent of Save. Desktop Chromium can open a real file or folder and save in place.
+
 ## Deploy to GitHub Pages
 
 1. Create a repository named `kalyxis.github.io` under the `kalyxis` GitHub account and push this project to the `main` branch.

@@ -23,9 +23,8 @@ export function registerCommands(s: Services): void {
   add('file.newFolder', 'New folder', 'File', () => actions.newFolder(), { keywords: 'create directory' })
   add('file.newScratch', 'New scratch buffer', 'File', () => actions.newScratch(), { keywords: 'untitled temporary' })
   add('file.fromExample', 'New from example', 'File', () => ui({ examplesOpen: true }), { keywords: 'template sample' })
-  add('file.openPicker', 'Open file from device', 'File', () => documents.openWithPicker(), {
-    enabled: () => typeof window.showOpenFilePicker === 'function',
-  })
+  add('file.open', 'Open files', 'File', () => actions.openFromDevice(), { keywords: 'load import upload files zip' })
+  add('file.export', 'Save to Files or download a copy', 'File', () => documents.exportToDevice(), { enabled: hasDoc, keywords: 'export share download icloud' })
   add('file.save', 'Save', 'File', () => void documents.save(), { enabled: hasDoc })
   add('file.saveAs', 'Save as', 'File', () => {
     const a = documents.active

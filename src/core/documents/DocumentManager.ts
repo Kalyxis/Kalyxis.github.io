@@ -238,13 +238,13 @@ export class DocumentManager {
     const options: ChoiceOption[] = [{ id: 'workspace', label: `Save in ${provider.label}`, tone: 'primary' }]
     if (provider.id !== 'local') options.push({ id: 'device', label: 'Save on this device' })
     if (Platform.canSavePicker) options.push({ id: 'picker', label: 'Choose a location' })
-    options.push({ id: 'download', label: 'Download a copy' }, { id: 'cancel', label: 'Cancel' })
+    options.push({ id: 'download', label: Platform.isIOS ? 'Save to Files or share' : 'Download a copy' }, { id: 'cancel', label: 'Cancel' })
     const choice = await dialogs.choose({ title: 'Save file', message: `Where should "${session.name}" be saved?`, options })
     if (!choice || choice === 'cancel') return false
 
     const text = session.getText()
     if (choice === 'download') {
-      await share.saveBlob(new Blob([text], { type: 'text/plain' }), session.name)
+      share.saveText(session.name, text)
       return false
     }
     if (choice === 'picker') {
@@ -278,6 +278,12 @@ export class DocumentManager {
       toasts.error(errorMessage(error, 'Could not save the file.'))
       return false
     }
+  }
+
+  /** Opens the Save sheet for a copy of a document: Save to Files on iPhone, a download elsewhere. */
+  exportToDevice(id: string | null = this.activeId): void {
+    const session = id ? this.sessions.get(id) : null
+    if (session) this.deps.share.saveText(session.name, session.getText())
   }
 
   private adopt(session: DocumentSession, source: DocumentSource): void {

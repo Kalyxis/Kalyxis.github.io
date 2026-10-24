@@ -1,0 +1,41 @@
+.v-export {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 8px 20px 12px;
+}
+.v-export-file {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+}
+.v-export-file strong {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+}
+.v-export-file span {
+  flex: none;
+  color: var(--text-3);
+  font-size: 13px;
+}
+.v-export-hint {
+  margin: 0;
+  color: var(--text-2);
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+.v-export-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.v-export-actions .v-btn {
+  width: 100%;
+  min-height: 46px;
+  justify-content: center;
+}
