@@ -1,0 +1,7 @@
+let counter = 0
+
+/** Short unique id, stable enough for React keys and map keys within one session. */
+export function uid(prefix: string): string {
+  counter += 1
+  return `${prefix}-${Date.now().toString(36)}-${counter.toString(36)}-${Math.random().toString(36).slice(2, 6)}`
+}

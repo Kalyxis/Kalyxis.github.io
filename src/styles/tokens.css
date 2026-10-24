@@ -1,0 +1,122 @@
+/*
+ * Kalyxis design tokens.
+ * Atmosphere: deep dusk ink, bone type, silver hairlines, and one evening-star gold used for
+ * emphasis only (caret, primary action, unsaved mark). Corners stay at 2px, borders at 1px.
+ * Dusk is the default. Vellum is the light twin, with the same structure and warmer paper.
+ */
+:root,
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --bg: #08090c;
+  --bg-2: #0d0f14;
+  --bg-3: #12151b;
+  --bg-4: #1a1e26;
+  --bg-hover: rgba(205, 211, 216, 0.05);
+  --bg-selected: rgba(205, 211, 216, 0.1);
+
+  --border: rgba(205, 211, 216, 0.09);
+  --border-hover: rgba(205, 211, 216, 0.2);
+  --border-strong: rgba(205, 211, 216, 0.34);
+
+  --text: #e8e4d8;
+  --text-2: #a8aeb5;
+  --text-3: #7f868e;
+  --text-4: #4f5660;
+
+  --accent: #8a96a3;
+  --accent-bright: #cdd3d8;
+  --accent-dim: rgba(138, 150, 163, 0.2);
+
+  --star: #d6c38f;
+  --star-dim: rgba(214, 195, 143, 0.12);
+  --star-line: rgba(214, 195, 143, 0.5);
+  --star-strong: rgba(214, 195, 143, 0.3);
+
+  --selection: rgba(138, 150, 163, 0.32);
+  --danger: #e09a96;
+  --danger-dim: rgba(224, 154, 150, 0.18);
+  --success: #9fc4a8;
+
+  --syn-keyword: #b8a9d9;
+  --syn-string: #9fc4a8;
+  --syn-number: #d6b48a;
+  --syn-comment: #626b75;
+  --syn-function: #8fb7d4;
+  --syn-type: #cdb892;
+  --syn-property: #b4bcc4;
+  --syn-operator: #8a96a3;
+  --syn-punct: #7d848c;
+  --syn-tag: #d49a9a;
+  --syn-meta: #8a96a3;
+  --syn-regex: #8fc9c0;
+
+  --rb-0: #d6c38f;
+  --rb-1: #b8a9d9;
+  --rb-2: #8fb7d4;
+  --rb-3: #9fc4a8;
+
+  --shadow: 0 -12px 48px rgba(0, 0, 0, 0.55);
+  --noise-opacity: 0.035;
+
+  --radius: 2px;
+  --font-display: 'Cormorant Garamond', 'Iowan Old Style', Georgia, serif;
+  --font-body: 'Jost', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  --bg: #f4f2ec;
+  --bg-2: #ebe8df;
+  --bg-3: #e3dfd4;
+  --bg-4: #d9d4c7;
+  --bg-hover: rgba(20, 22, 26, 0.05);
+  --bg-selected: rgba(20, 22, 26, 0.09);
+
+  --border: rgba(20, 22, 26, 0.12);
+  --border-hover: rgba(20, 22, 26, 0.24);
+  --border-strong: rgba(20, 22, 26, 0.4);
+
+  --text: #14161a;
+  --text-2: #444b53;
+  --text-3: #626972;
+  --text-4: #8d949b;
+
+  --accent: #4a5663;
+  --accent-bright: #1d232a;
+  --accent-dim: rgba(74, 86, 99, 0.16);
+
+  --star: #7a5c14;
+  --star-dim: rgba(122, 92, 20, 0.11);
+  --star-line: rgba(122, 92, 20, 0.5);
+  --star-strong: rgba(122, 92, 20, 0.26);
+
+  --selection: rgba(74, 86, 99, 0.25);
+  --danger: #a83c37;
+  --danger-dim: rgba(168, 60, 55, 0.14);
+  --success: #2f6b46;
+
+  --syn-keyword: #6a4c9a;
+  --syn-string: #3a7550;
+  --syn-number: #8f5f1f;
+  --syn-comment: #8a9097;
+  --syn-function: #2a608f;
+  --syn-type: #7a5a1a;
+  --syn-property: #3f4a55;
+  --syn-operator: #56626e;
+  --syn-punct: #6a717a;
+  --syn-tag: #a04646;
+  --syn-meta: #56626e;
+  --syn-regex: #1f7a70;
+
+  --rb-0: #7a5c14;
+  --rb-1: #6a4c9a;
+  --rb-2: #2a608f;
+  --rb-3: #3a7550;
+
+  --shadow: 0 -10px 40px rgba(20, 22, 26, 0.18);
+  --noise-opacity: 0.05;
+}
