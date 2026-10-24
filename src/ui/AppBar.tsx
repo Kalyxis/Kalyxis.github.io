@@ -51,7 +51,7 @@ export function AppBar() {
           disabled={!running && !runner}
           onClick={() => (running ? app.actions.stop() : void app.actions.run())}
           aria-label={running ? 'Stop' : 'Run'}
-          title={runner ? (running ? 'Stop' : `Run ${runner.label} (${shortcutLabel('Mod+Enter')})`) : 'Run works with Python, JavaScript and HTML files'}
+          title={runner ? (running ? 'Stop' : `Run ${runner.label} (${shortcutLabel('Mod+Shift+Enter')})`) : 'Run works with Python, JavaScript and HTML files'}
         >
           {starting ? <Loader size={16} strokeWidth={1.6} className="v-spin" /> : running ? <Square size={14} strokeWidth={1.6} fill="currentColor" /> : <Play size={15} strokeWidth={1.6} fill="currentColor" />}
           <span>{starting ? 'Loading' : running ? 'Stop' : 'Run'}</span>

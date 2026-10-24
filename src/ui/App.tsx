@@ -17,6 +17,7 @@ import { EntryMenu, ExamplesSheet, ExplorerMenu, LanguageSheet, NewMenu } from '
 import { StatusBar } from './StatusBar'
 import { TabBar } from './TabBar'
 import { ToastHost } from './ToastHost'
+import { TerminalScreen } from './terminal/TerminalScreen'
 import { Welcome } from './Welcome'
 
 function useHeight(ref: React.RefObject<HTMLElement | null>): number {
@@ -41,6 +42,7 @@ export function App() {
   const keyBar = useAppStore((s) => s.settings.keyBar)
   const hasTabs = useAppStore((s) => s.tabs.length > 0)
   const previewFull = useAppStore((s) => s.ui.previewFullscreen)
+  const terminalOpen = useAppStore((s) => s.ui.terminalOpen)
   const patchUi = useAppStore((s) => s.patchUi)
   const mainRef = useRef<HTMLElement>(null)
   const mainHeight = useHeight(mainRef)
@@ -86,6 +88,7 @@ export function App() {
       </div>
       {showKeys ? <AccessoryBar /> : !editing ? <StatusBar /> : null}
 
+      {terminalOpen ? <TerminalScreen /> : null}
       <Palette />
       <SettingsSheet />
       <NewMenu />

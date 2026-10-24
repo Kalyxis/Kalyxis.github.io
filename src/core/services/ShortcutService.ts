@@ -7,7 +7,8 @@ export const SHORTCUTS: Record<string, string> = {
   'Mod+KeyO': 'file.open',
   'Mod+KeyS': 'file.save',
   'Mod+Shift+KeyS': 'file.saveAs',
-  'Mod+Enter': 'run.run',
+  'Mod+Enter': 'edit.lineBelow',
+  'Mod+Shift+Enter': 'run.run',
   'Mod+Period': 'run.stop',
   'Mod+KeyP': 'go.quickOpen',
   'Mod+Shift+KeyP': 'go.palette',
@@ -56,7 +57,9 @@ export class ShortcutService {
 
   private onKeyDown(event: KeyboardEvent): void {
     if (event.isComposing || event.repeat) return
-    const mod = Platform.isMac ? event.metaKey : event.ctrlKey
+    if (useAppStore.getState().ui.terminalOpen) return
+    // Ctrl+Enter inserts a line below on every platform, including Apple keyboards.
+    const mod = Platform.isMac ? event.metaKey || (event.ctrlKey && event.code === 'Enter') : event.ctrlKey
     const parts: string[] = []
     if (mod) parts.push('Mod')
     if (event.altKey) parts.push('Alt')

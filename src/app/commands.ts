@@ -43,6 +43,7 @@ export function registerCommands(s: Services): void {
   add('file.exportWorkspace', 'Export workspace as zip', 'Workspace', () => workspace.exportWorkspace(), { keywords: 'download backup' })
 
   // Edit
+  edit('edit.lineBelow', 'Insert line below (new line)', 'insertBlankLine', 'Edit', 'enter next line')
   edit('edit.undo', 'Undo', 'undo')
   edit('edit.redo', 'Redo', 'redo')
   add('edit.find', 'Find', 'Edit', () => actions.openFind(false), { enabled: hasDoc })
@@ -71,6 +72,7 @@ export function registerCommands(s: Services): void {
   add('edit.language', 'Change language mode', 'Edit', () => ui({ languageSheetOpen: true }), { enabled: hasDoc, keywords: 'syntax highlighting' })
 
   // Run
+  add('run.terminal', 'Open Terminal (Python sandbox)', 'Run', () => ui({ terminalOpen: true }), { keywords: 'python sandbox scratchpad free play console' })
   add('run.run', 'Run', 'Run', () => actions.run(), { enabled: () => runs.canRun() })
   add('run.stop', 'Stop', 'Run', () => actions.stop(), { enabled: () => useAppStore.getState().run.status === 'running' })
   add('run.clear', 'Clear console', 'Run', () => runs.clear())

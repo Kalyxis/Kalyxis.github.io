@@ -76,6 +76,12 @@ npm run preview
 
 `npm run assets` regenerates the icons and splash screens from the mark (only needed after a design change).
 
+## Terminal and keys
+
+- **Terminal:** plus button, then Terminal (also on the start screen and in the command palette). A free Python sandbox with a saved scratchpad, an Input panel for `input()` lines that opens by itself when your code asks for input, a console with status and run time, a Python ready, waking or asleep indicator, Stop, Examples, Undo after clearing or loading an example, and full screen focus mode on phones with a Done button.
+- **Key bar:** opens on the Tools page. The first key is Ctrl+Enter, which starts a new line below wherever the cursor is, then Tab, undo, cursor keys, find, comment, outdent, redo, duplicate, delete, move line, select line, home and end. The `( )` key opens the Symbols page for brackets and other characters. Hold a cursor, undo or move key to repeat it.
+- **Shortcuts:** Ctrl+Enter (Cmd+Enter on Mac) inserts a line below. Run is now Ctrl+Shift+Enter (Cmd+Shift+Enter on Mac).
+
 ## Opening and saving files on iPhone
 
 - **Open:** tap the plus button, then Open files (or Open files on the start screen). Pick files from the Files app, iCloud Drive or On My iPhone. Several files and zip archives work. Files open in tabs and are kept in the workspace.
