@@ -96,6 +96,7 @@ export interface UiState {
   newMenuOpen: boolean
   explorerMenuOpen: boolean
   exportJob: ExportJob | null
+  terminalOpen: boolean
 }
 
 export interface RunState {
@@ -167,6 +168,7 @@ export const useAppStore = create<AppState>((set) => ({
     newMenuOpen: false,
     explorerMenuOpen: false,
     exportJob: null,
+    terminalOpen: false,
   },
   run: { status: 'idle', chunks: [], chars: 0, ms: null, error: null, runner: null, runtime: 'idle' },
   preview: { html: null, key: 0 },

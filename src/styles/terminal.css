@@ -1,0 +1,412 @@
+/* On screen keys: the Ctrl+Enter key and the two page layout */
+.v-key-accent {
+  color: var(--star);
+  border-color: var(--star-line);
+  background: var(--star-dim);
+}
+.v-key-combo {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  font-size: 12px;
+}
+
+/* Terminal screen */
+.t-screen {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+}
+.t-bar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 52px;
+  padding: 0 8px;
+  border-bottom: 1px solid var(--border);
+}
+.t-back {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 44px;
+  padding: 0 10px 0 4px;
+  border: 0;
+  background: transparent;
+  color: var(--text-2);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.t-bar-title,
+.t-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--star);
+}
+.t-bar-end {
+  width: 72px;
+}
+.t-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0 14px 96px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overscroll-behavior: contain;
+}
+.t-head {
+  padding: 18px 2px 4px;
+}
+.t-head h1 {
+  margin: 6px 0 6px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 34px;
+  line-height: 1.05;
+}
+.t-head p {
+  margin: 0;
+  max-width: 36ch;
+  color: var(--text-2);
+  font-size: 14px;
+  line-height: 1.55;
+}
+.t-card {
+  border: 1px solid var(--border-hover);
+  background: var(--bg-2);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.t-card-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 6px 0 12px;
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-2);
+  text-align: left;
+}
+.t-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.t-lines,
+.t-hint {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--text-3);
+}
+.t-rt,
+.t-status {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+.t-rt::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.t-rt-ready {
+  color: var(--success);
+}
+.t-rt-loading {
+  color: var(--star);
+}
+.t-rt-loading::before {
+  animation: t-pulse 1s infinite;
+}
+@keyframes t-pulse {
+  50% {
+    opacity: 0.25;
+  }
+}
+.t-status {
+  margin-left: auto;
+  padding-right: 6px;
+}
+.s-ok {
+  color: var(--success);
+}
+.s-error {
+  color: var(--danger);
+}
+.s-busy {
+  color: var(--star);
+}
+.t-editor {
+  height: clamp(190px, 38dvh, 340px);
+}
+.t-cm,
+.t-cm .cm-editor {
+  height: 100%;
+}
+.t-cm .cm-scroller {
+  overflow: auto;
+}
+.t-toggle {
+  cursor: pointer;
+}
+.t-chev {
+  flex: none;
+  transition: transform 0.18s var(--ease);
+}
+.t-chev.is-open {
+  transform: rotate(90deg);
+}
+.t-stdin {
+  display: block;
+  width: 100%;
+  min-height: 84px;
+  resize: vertical;
+  padding: 12px 14px;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font: 16px/1.55 var(--font-mono);
+  outline: none;
+}
+.t-stdin::placeholder {
+  color: var(--text-4);
+}
+.t-stdin:focus {
+  box-shadow: inset 0 -2px 0 var(--star);
+}
+.t-console {
+  margin: 0;
+  min-height: 96px;
+  max-height: 46dvh;
+  overflow: auto;
+  padding: 12px 14px;
+  font: 14px/1.6 var(--font-mono);
+  white-space: pre-wrap;
+  word-break: break-word;
+  user-select: text;
+  -webkit-user-select: text;
+}
+.t-muted {
+  color: var(--text-3);
+}
+.t-err {
+  color: var(--danger);
+}
+.t-verdict {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 14px;
+  border-top: 1px solid var(--danger-dim);
+  background: var(--danger-dim);
+  font-size: 13.5px;
+}
+.t-verdict span {
+  color: var(--text-2);
+}
+.t-dock {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  gap: 10px;
+  padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px));
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+}
+.t-dock .v-btn {
+  min-height: 48px;
+}
+.t-run {
+  flex: 1;
+}
+.t-toast {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  width: calc(100% - 28px);
+  max-width: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 4px 4px 16px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-4);
+  box-shadow: var(--shadow);
+  font-size: 14px;
+}
+.t-toast button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 0;
+  background: var(--star-dim);
+  color: var(--star);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.t-focusbar,
+.t-keys {
+  display: none;
+}
+
+/* Focus mode on phones: the editor takes the screen, one slim key row sits above the keyboard */
+.t-screen.is-editing .t-bar,
+.t-screen.is-editing .t-head,
+.t-screen.is-editing .t-input-card,
+.t-screen.is-editing .t-output-card,
+.t-screen.is-editing .t-dock,
+.t-screen.is-editing .t-toast,
+.t-screen.is-editing .t-editor-card .t-card-top {
+  display: none;
+}
+.t-screen.is-editing .t-focusbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  height: 44px;
+  padding: 0 8px;
+  border-bottom: 1px solid var(--border);
+}
+.t-screen.is-editing .t-keys {
+  display: block;
+  flex: none;
+}
+.t-screen.is-editing .t-scroll {
+  padding: 0;
+  gap: 0;
+  overflow: hidden;
+}
+.t-screen.is-editing .t-editor-card {
+  flex: 1;
+  min-height: 0;
+  border: 0;
+  border-radius: 0;
+}
+.t-screen.is-editing .t-editor {
+  height: 100%;
+}
+.t-done {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 36px;
+  padding: 0 12px 0 6px;
+  border: 1px solid var(--star-line);
+  background: var(--star-dim);
+  color: var(--star);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.t-focus-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+/* Search panel inside the terminal editor */
+.t-cm .cm-panels {
+  background: var(--bg-3);
+  color: var(--text);
+  border: 0;
+}
+.t-cm .cm-panels-top {
+  border-bottom: 1px solid var(--border-hover);
+}
+.t-cm .cm-search {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 44px 8px 8px;
+  font: 13px var(--font-body);
+}
+.t-cm .cm-search br {
+  display: none;
+}
+.t-cm .cm-search .cm-textfield {
+  flex: 1 1 120px;
+  min-width: 0;
+  height: 38px;
+  margin: 0;
+  padding: 0 10px;
+  border: 1px solid var(--border-hover);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  font: 16px var(--font-mono);
+  outline: none;
+}
+.t-cm .cm-search .cm-textfield:focus {
+  border-color: var(--star-line);
+}
+.t-cm .cm-search .cm-button {
+  height: 38px;
+  margin: 0;
+  padding: 0 12px;
+  border: 1px solid var(--border-hover);
+  border-radius: var(--radius);
+  background: var(--bg-4);
+  background-image: none;
+  color: var(--text);
+  font-size: 12px;
+}
+.t-cm .cm-search label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin: 0;
+  color: var(--text-2);
+}
+.t-cm .cm-search label:nth-of-type(n + 2),
+.t-cm .cm-search button[name='select'] {
+  display: none;
+}
+.t-cm .cm-search button[name='close'] {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  background: transparent;
+  color: var(--text-2);
+  font-size: 20px;
+}

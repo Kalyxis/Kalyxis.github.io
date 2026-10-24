@@ -1,4 +1,4 @@
-import { FilePlus, FolderOpen, Sparkles, Upload, Command } from 'lucide-react'
+import { FilePlus, FolderOpen, Sparkles, Terminal, Upload, Command } from 'lucide-react'
 import { app } from '../app/container'
 import { Platform } from '../core/util/platform'
 import { shortcutLabel } from '../core/services/ShortcutService'
@@ -20,6 +20,9 @@ export function Welcome() {
           </button>
           <button type="button" className="v-btn" onClick={() => useAppStore.getState().patchUi({ examplesOpen: true })}>
             <Sparkles size={17} strokeWidth={1.4} /> Start from an example
+          </button>
+          <button type="button" className="v-btn" onClick={() => useAppStore.getState().patchUi({ terminalOpen: true })}>
+            <Terminal size={17} strokeWidth={1.4} /> Terminal
           </button>
           <button type="button" className="v-btn" onClick={() => app.actions.openFromDevice()}>
             <Upload size={17} strokeWidth={1.4} /> Open files

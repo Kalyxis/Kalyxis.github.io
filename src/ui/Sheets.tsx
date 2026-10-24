@@ -1,4 +1,4 @@
-import { Check, FilePlus, FolderInput, FolderOpen, FolderPlus, HardDrive, RefreshCw, Sparkles, Trash2, Upload, Copy, Pencil, FileText, FileArchive, Share2, Search } from 'lucide-react'
+import { Check, FilePlus, FolderInput, FolderOpen, FolderPlus, HardDrive, RefreshCw, Sparkles, Trash2, Upload, Copy, Pencil, FileText, FileArchive, Share2, Search, Terminal } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { app } from '../app/container'
 import { getLanguageInfo, LANGUAGES, type LanguageId } from '../core/languages/catalog'
@@ -44,6 +44,7 @@ export function NewMenu() {
     <Sheet open={open} title="File" onClose={close} size="sm">
       <MenuItem icon={<FilePlus {...icon} />} label="New file" hint="Create a file in the current folder" onClick={run(() => void app.actions.newFile())} />
       <MenuItem icon={<FileText {...icon} />} label="Scratch buffer" hint="A temporary file you can save later" onClick={run(() => app.actions.newScratch())} />
+      <MenuItem icon={<Terminal {...icon} />} label="Terminal" hint="A free Python sandbox with a console" onClick={run(() => patchUi({ terminalOpen: true }))} />
       <MenuItem icon={<Sparkles {...icon} />} label="From an example" hint="Python, JavaScript and HTML starters" onClick={run(() => patchUi({ examplesOpen: true }))} />
       <MenuItem
         icon={<Upload {...icon} />}
