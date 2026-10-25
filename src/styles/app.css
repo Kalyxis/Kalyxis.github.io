@@ -16,11 +16,18 @@
   -webkit-user-select: none;
   user-select: none;
   -webkit-touch-callout: none;
-  opacity: 0;
-  transition: opacity 0.35s var(--ease);
+  /* No persistent opacity or transform on the root: iOS home-screen apps keep such a layer
+     rasterized at the wrong scale, which made the header text and Run button look blurry. */
+  visibility: hidden;
 }
 .v-app.is-ready {
-  opacity: 1;
+  visibility: visible;
+  animation: v-app-in 0.3s var(--ease) backwards;
+}
+@keyframes v-app-in {
+  from {
+    opacity: 0;
+  }
 }
 
 .v-visually-hidden {
@@ -227,6 +234,12 @@
   padding: env(safe-area-inset-top, 0px) 6px 0;
   background: var(--bg-2);
   border-bottom: 1px solid var(--border);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transform: none;
+  filter: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
 }
 .v-brand {
   display: none;
