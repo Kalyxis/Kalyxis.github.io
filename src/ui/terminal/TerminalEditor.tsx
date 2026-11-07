@@ -3,7 +3,7 @@ import { python } from '@codemirror/lang-python'
 import {
   copyLineDown, cursorLineEnd, cursorLineStart, cursorCharLeft, cursorCharRight, cursorLineDown, cursorLineUp,
   defaultKeymap, deleteLine, history, historyKeymap, indentLess, indentMore, insertBlankLine, moveLineDown, moveLineUp,
-  redo, selectCharLeft, selectCharRight, selectLine, selectLineDown, selectLineUp, toggleComment, undo,
+  redo, selectCharLeft, selectCharRight, selectLineDown, selectLineUp, toggleComment, undo,
 } from '@codemirror/commands'
 import { bracketMatching, indentOnInput, indentUnit } from '@codemirror/language'
 import { highlightSelectionMatches, openSearchPanel, search, searchKeymap } from '@codemirror/search'
@@ -13,6 +13,7 @@ import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
 import { app } from '../../app/container'
 import type { Direction, EditorCommandId } from '../../core/editor/EditorController'
 import { rainbowBrackets } from '../../core/editor/rainbowBrackets'
+import { scrollMargins, scrollToMatch, selectWholeLines } from '../../core/editor/scrollBehavior'
 import { kalyxisHighlighting, kalyxisTheme } from '../../core/editor/theme'
 import type { KeyTarget } from '../AccessoryBar'
 
@@ -36,7 +37,7 @@ const tabCommand: Command = (view) => {
 }
 
 const COMMANDS: Partial<Record<EditorCommandId, Command>> = {
-  undo, redo, indentLess, indentMore, tab: tabCommand, selectLine, deleteLine,
+  undo, redo, indentLess, indentMore, tab: tabCommand, selectLine: selectWholeLines, deleteLine,
   duplicateLine: copyLineDown, moveLineUp, moveLineDown, toggleComment,
   cursorLineStart, cursorLineEnd, insertBlankLine,
 }
@@ -73,7 +74,8 @@ export const TerminalEditor = forwardRef<TerminalEditorHandle, Props>(function T
       kalyxisTheme,
       kalyxisHighlighting,
       indentUnit.of('    '),
-      search({ top: true }),
+      scrollMargins,
+      search({ top: true, scrollToMatch }),
       keymap.of([
         { key: 'Mod-Shift-Enter', run: () => (latest.current.onRun(), true) },
         { key: 'Mod-.', run: () => (latest.current.onStop(), true) },
@@ -102,7 +104,8 @@ export const TerminalEditor = forwardRef<TerminalEditorHandle, Props>(function T
 
   useEffect(() => {
     const v = view.current
-    if (!v || v.state.doc.toString() === value) return
+    // Cheap length check first, so a long script is not stringified on every keystroke.
+    if (!v || (v.state.doc.length === value.length && v.state.doc.toString() === value)) return
     v.dispatch({ changes: { from: 0, to: v.state.doc.length, insert: value }, selection: { anchor: Math.min(value.length, v.state.selection.main.head) } })
   }, [value])
 

@@ -21,7 +21,7 @@ export const kalyxisTheme = EditorView.theme({
     overscrollBehavior: 'contain',
     WebkitOverflowScrolling: 'touch',
   },
-  '.cm-content': { caretColor: 'var(--star)', padding: '14px 0' },
+  '.cm-content': { caretColor: 'var(--star)', padding: '14px 0 96px' },
   '.cm-line': { padding: '0 16px 0 6px' },
   '.cm-cursor, .cm-dropCursor': { borderLeftColor: 'var(--star)', borderLeftWidth: '2px' },
   '&.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection': {

@@ -99,7 +99,9 @@ async function start(): Promise<void> {
   editor.events.cursor.subscribe((cursor) => useAppStore.setState({ cursor }))
   editor.events.problems.subscribe((problems) => useAppStore.setState({ problems }))
   editor.events.focus.subscribe((focused) => useAppStore.getState().patchUi({ editorFocused: focused }))
-  viewport.keyboardChanged.subscribe(() => window.setTimeout(() => editor.revealCursor(), 120))
+  viewport.keyboardChanged.subscribe((open) => {
+    if (open) window.setTimeout(() => editor.revealCursor(), 160)
+  })
 
   viewport.start()
   shortcuts.start()
