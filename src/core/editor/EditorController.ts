@@ -30,7 +30,6 @@ import {
   selectAll,
   selectCharLeft,
   selectCharRight,
-  selectLine,
   selectLineDown,
   selectLineEnd,
   selectLineStart,
@@ -84,7 +83,6 @@ import {
   keymap,
   lineNumbers,
   rectangularSelection,
-  scrollPastEnd,
   type Command,
   type ViewUpdate,
 } from '@codemirror/view'
@@ -92,6 +90,7 @@ import type { DocumentSession, Eol } from '../documents/DocumentSession'
 import type { LanguageId } from '../languages/catalog'
 import type { LanguageRegistry } from '../languages/LanguageRegistry'
 import type { Settings } from '../services/settings'
+import { anchorSearchToViewport, GestureClock, isComfortablyVisible, scrollMargins, scrollToMatch, selectWholeLines } from './scrollBehavior'
 import { Emitter } from '../util/Emitter'
 import { debounce } from '../util/timing'
 import type { CursorState, Problem } from '../../store/useAppStore'
@@ -191,7 +190,7 @@ const COMMANDS: Record<EditorCommandId, Command> = {
   indentLess,
   tab: tabCommand,
   selectAll,
-  selectLine,
+  selectLine: selectWholeLines,
   deleteLine,
   duplicateLine: copyLineDown,
   moveLineUp,
@@ -243,6 +242,7 @@ export class EditorController {
   private settings: Settings
   private dark = true
   private readonly dynamic = new Compartment()
+  private readonly gestures = new GestureClock()
   private readonly languages: LanguageRegistry
   private readonly emitCursor = debounce(() => this.publishCursor(), 40)
   private readonly emitProblems = debounce(() => this.publishProblems(), 350)
@@ -266,6 +266,7 @@ export class EditorController {
     this.host = host
     host.style.setProperty('--editor-font-size', `${this.settings.fontSize}px`)
     this.view = new EditorView({ parent: host, state: this.blankState() })
+    this.gestures.attach(this.view.scrollDOM)
     const initial = this.pending
     this.pending = null
     this.show(initial ?? this.current)
@@ -274,6 +275,7 @@ export class EditorController {
   unmount(): void {
     if (!this.view) return
     if (this.current) this.current.state = this.view.state
+    this.gestures.dispose()
     this.view.destroy()
     this.view = null
     this.host = null
@@ -342,11 +344,18 @@ export class EditorController {
     return this.view?.hasFocus ?? false
   }
 
-  /** Keeps the caret visible after the on screen keyboard opens or the layout changes. */
+  /**
+   * Keeps the caret visible after the on screen keyboard opens or the layout changes.
+   * It does nothing when the caret is already comfortably in view, and it waits while the
+   * user is dragging the document, so it can never pull the view away from a scroll.
+   */
   revealCursor(): void {
     const view = this.view
     if (!view || !view.hasFocus) return
-    view.dispatch({ effects: EditorView.scrollIntoView(view.state.selection.main.head, { y: 'nearest', yMargin: 28 }) })
+    if (this.gestures.active) return
+    const head = view.state.selection.main.head
+    if (isComfortablyVisible(view, head, 8)) return
+    view.dispatch({ effects: EditorView.scrollIntoView(head, { y: 'nearest' }) })
   }
 
   /** Inserts text the way the keyboard would, so auto closing brackets and tags still apply. */
@@ -465,11 +474,17 @@ export class EditorController {
   }
 
   findNext(): void {
-    if (this.view) findNext(this.view)
+    const view = this.view
+    if (!view) return
+    anchorSearchToViewport(view, 'forward')
+    findNext(view)
   }
 
   findPrevious(): void {
-    if (this.view) findPrevious(this.view)
+    const view = this.view
+    if (!view) return
+    anchorSearchToViewport(view, 'backward')
+    findPrevious(view)
   }
 
   replaceNext(): void {
@@ -572,8 +587,8 @@ export class EditorController {
       crosshairCursor(),
       highlightSelectionMatches(),
       highlightSpecialChars(),
-      scrollPastEnd(),
-      search({ top: true, createPanel: () => ({ dom: document.createElement('div') }) }),
+      scrollMargins,
+      search({ top: true, scrollToMatch, createPanel: () => ({ dom: document.createElement('div') }) }),
       kalyxisTheme,
       kalyxisHighlighting,
       EditorView.contentAttributes.of({

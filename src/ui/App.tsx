@@ -39,6 +39,7 @@ export function App() {
   const sidebarOpen = useAppStore((s) => s.ui.sidebarOpen)
   const focused = useAppStore((s) => s.ui.editorFocused)
   const keyboardOpen = useAppStore((s) => s.ui.keyboardOpen)
+  const findOpen = useAppStore((s) => s.ui.findOpen)
   const keyBar = useAppStore((s) => s.settings.keyBar)
   const hasTabs = useAppStore((s) => s.tabs.length > 0)
   const previewFull = useAppStore((s) => s.ui.previewFullscreen)
@@ -55,8 +56,11 @@ export function App() {
   }, [])
 
   const touch = Platform.isTouch
-  const showKeys = touch && keyBar && focused && hasTabs
-  const editing = touch && focused && keyboardOpen && !wide
+  // While Find owns the keyboard the editor is not focused, but the layout must not change: the key bar
+  // and the console panel swapping places used to resize the editor under the user's finger.
+  const typing = focused || (findOpen && keyboardOpen)
+  const showKeys = touch && keyBar && typing && hasTabs
+  const editing = touch && typing && keyboardOpen && !wide
 
   return (
     <div
